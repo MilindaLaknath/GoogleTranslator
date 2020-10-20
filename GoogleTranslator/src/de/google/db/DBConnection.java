@@ -17,22 +17,24 @@ public final class DBConnection
 	private Statement statement;
 	public static DBConnection db;
 
-	private DBConnection()
-	{
+	private static Connection connction;
+
+    public static Connection getConnction() throws ClassNotFoundException,java.sql.SQLException{
 		String url = "jdbc:mysql://localhost:3306/";
 		String dbName = "rusl";
 		String driver = "com.mysql.jdbc.Driver";
 		String userName = "milinda";
 		String password = "1234";
-		try
-		{
-			Class.forName( driver ).newInstance();
-			this.conn = DriverManager.getConnection( url + dbName, userName, password );
-		}
-		catch ( Exception sqle )
-		{
-			sqle.printStackTrace();
-		}
+        if (connction == null) {
+            Class.forName("com.mysql.jdbc.Driver");
+            connction = DriverManager.getConnection( url + dbName, userName, password );
+        }
+        return connction;
+    }
+
+	private DBConnection()
+	{
+		conn = getConnction();
 	}
 
 	/**
